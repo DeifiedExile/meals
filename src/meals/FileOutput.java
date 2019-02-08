@@ -1,4 +1,4 @@
-package us.mattgreen;
+package meals;
 
 import java.io.*;
 

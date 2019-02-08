@@ -1,4 +1,4 @@
-package us.mattgreen;
+package meals;
 
 public enum MealType {
     BREAKFAST("Breakfast"), DESSERT("Dessert"), DINNER("Dinner"), LUNCH("Lunch");
