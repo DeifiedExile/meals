@@ -68,6 +68,10 @@ public class Main {
         System.out.println("Goodbye");
         System.exit(0);
     }
+//    private void doControlBreak()
+//    {
+//        
+//    }
 
     private void listByMealType() {
         // Default value pre-selected in case
