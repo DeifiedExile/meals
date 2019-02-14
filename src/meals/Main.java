@@ -1,5 +1,8 @@
 package meals;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Main {
@@ -57,7 +60,7 @@ public class Main {
                     searchByName();
                     break;
                 case "4":
-                    // doControlBreak();
+                     doControlBreak();
                     break;
                 case "5":
                     userContinue = false;
@@ -68,10 +71,7 @@ public class Main {
         System.out.println("Goodbye");
         System.exit(0);
     }
-//    private void doControlBreak()
-//    {
-//        
-//    }
+
 
     private void listByMealType() {
         // Default value pre-selected in case
@@ -105,5 +105,103 @@ public class Main {
         System.out.print("Please Enter Value: ");
         String ans = keyboard.nextLine();
         cookbook.printByNameSearch(ans);
+    }
+    private void doControlBreak()
+    {
+        FileInput indata = new FileInput("meals_data.csv");
+
+        String line;
+        
+        ArrayList<Meal> meals = new ArrayList<>();
+        Meal meal;
+        MealType currentType = null;
+        int totalCal = 0, median, min, max;
+        double avg;
+        
+        while ((line = indata.fileReadLine()) != null) {
+            
+           
+            String[] fields = line.split(",");
+            MealType mType = MealType.valueOf(fields[0].toUpperCase());
+            int cal = 0;
+            try
+            {
+                cal = Integer.parseInt(fields[2]);
+            }
+            catch(Exception e)
+            {
+                System.out.println("Invalid Data. Exiting...");
+                System.exit(1);
+            }
+            
+            meal = new Meal(mType, fields[1], cal);
+            if(currentType == null)
+            {
+                currentType = meal.getMealType();
+            }
+            
+            if(!meal.getMealType().equals(currentType))
+            {
+                int[] calArray = new int[meals.size()];
+                
+                int count = 0;
+                for(Meal m : meals)
+                {
+                    calArray[count] = m.getCalories();
+                    count++;
+                    totalCal += m.getCalories();                    
+                }
+                Arrays.sort(calArray);
+                max = calArray[calArray.length-1];
+                min = calArray[0];
+                if(calArray.length % 2 == 0)
+                {
+                    median = (calArray[calArray.length / 2] + calArray[calArray.length / 2 - 1])/2;
+                }
+                else
+                {
+                    median = calArray[calArray.length/2];
+                }
+                avg = totalCal / calArray.length;               
+                String output = String.format("Meal Type: %s Minimum: %5d Maximum: %5d Median: %5d Average: %5.2f Maximum: %5d", currentType.toString(), min, max, median, avg, totalCal);
+                System.out.println(output);
+                
+                
+                meals.clear();
+                
+                currentType = meal.getMealType();
+                
+            }
+            
+            meals.add(meal);
+            line = "";
+            
+        }
+        
+                int[] calArray = new int[meals.size()];
+                
+                int count = 0;
+                for(Meal m : meals)
+                {
+                    calArray[count] = m.getCalories();
+                    count++;
+                    totalCal += m.getCalories();                    
+                }
+                Arrays.sort(calArray);
+                max = calArray[calArray.length-1];
+                min = calArray[0];
+                if(calArray.length % 2 == 0)
+                {
+                    median = (calArray[calArray.length / 2] + calArray[calArray.length / 2 - 1])/2;
+                }
+                else
+                {
+                    median = calArray[calArray.length/2];
+                }
+                avg = totalCal / calArray.length;               
+                String output = String.format("Meal Type: %s Minimum: %5d Maximum: %5d Median: %5d Average: %5.2f Maximum: %5d", currentType.toString(), min, max, median, avg, totalCal);
+                System.out.println(output);
+                
+
     }
 }
